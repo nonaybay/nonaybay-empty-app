@@ -1,13 +1,16 @@
 #!/usr/bin/bash
 
 
-
-clear
-
+clear && sleep 1
+gradle clean
+clear && sleep 1
 gradle build
-
-sleep 1
-
-clear
-
+clear && sleep 1
+rm -rfv output
+mkdir -p output
 cp /home/nonaybay/Projects/nonaybay-empty-app/app/build/outputs/apk/debug/*.apk /home/nonaybay/Projects/nonaybay-empty-app/output/
+cp /home/nonaybay/Projects/nonaybay-empty-app/app/build/outputs/apk/debug/*.apk /home/nonaybay/Projects/nonaybay-empty-app/output/
+
+cd /home/nonaybay/Projects/nonaybay-empty-app/output/
+
+for app in *.apk; do nnb-apkinfo $app; done
