@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+
+
+
+def setsdk = 25
+def setsdkmin = (setsdk - 9)
+def setversioncode = 1
+def setversionname = '0.0.1-heregoeshash'
+def setminify = false
+def pgaf = 'proguard-android.txt'
+def pgrf = 'proguard-rules.pro'
+def appid = 'floss.nnb.template.empty'
+
+
+
+android {
+  
+  compileSdkVersion setsdk
+
+  defaultConfig {
+
+    applicationId appid
+    minSdkVersion setsdkmin
+    targetSdkVersion setsdk
+    versionCode setversioncode
+    versionName setversionname
+
+  }
+
+  buildTypes {
+
+    release {
+
+      minifyEnabled setminify
+      proguardFiles getDefaultProguardFile(pgaf), pgrf
+
+    }
+  }
+}
+
+dependencies {
+  implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+  implementation 'com.android.support:appcompat-v7:25.3.1'
+}

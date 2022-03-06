@@ -1,0 +1,13 @@
+#!/usr/bin/bash
+
+
+
+clear
+
+gradle build
+
+sleep 1
+
+clear
+
+cp /home/nonaybay/Projects/nonaybay-empty-app/app/build/outputs/apk/debug/*.apk /home/nonaybay/Projects/nonaybay-empty-app/output/

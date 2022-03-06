@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+
+import math
+import os
+from hashlib import md5, sha512, sha256, sha3_512, sha3_256
+
+
+
+def generatehash(string):
+    string = sha512(string.encode()).hexdigest()
+    string = sha256(string.encode()).hexdigest()
+    string = sha3_512(string.encode()).hexdigest()
+    string = sha3_256(string.encode()).hexdigest()
+    string = md5(string.encode('utf-8')).hexdigest()
+
+    return string
+
+
+
+setsdk = int(input('target sdk: '))
+setversioncode = int(input('version code: '))
+setsdkmina = math.ceil(int(math.sqrt(setsdk)))
+setsdkminb = math.floor(setsdkmina / 2)
+setsdkminc = math.ceil(pow(setsdkminb, 2))
+setsdkmin = math.floor(setsdk - (setsdkmina + setsdkminc))
+var_sdk = setsdk
+var_sdkmin = setsdkmin
+var_versioncode = setversioncode
+var_versionname_a = 0
+var_versionname_b = 0
+var_versionname_c = var_versioncode
+var_versionname_d = generatehash('{}{}{}'.format(var_versionname_a, var_versionname_b, var_versionname_c))
+var_vername = '{}.{}.{}-{}'.format(var_versionname_a, var_versionname_b, var_versionname_c, var_versionname_d)
+appid = 'floss.nnb.template.empty'
+buildfile = 'build.gradle'
+
+if os.path.exists(buildfile):
+    os.remove(buildfile)
+else:
+    print('file does not exist')
+
+build_file = open(buildfile, 'w+')
+
+build_file.write("apply plugin: 'com.android.application'\n\n")
+build_file.write("android {\n")
+build_file.write("	compileSdkVersion {}\n".format(var_sdk))
+build_file.write("	defaultConfig {\n")
+build_file.write("		applicationId '{}'\n".format(appid))
+build_file.write("		minSdkVersion {}\n".format(var_sdkmin))
+build_file.write("		targetSdkVersion {}\n".format(var_sdk))
+build_file.write("		versionCode {}\n".format(var_versioncode))
+build_file.write("		versionName '{}'\n".format(var_vername))
+build_file.write("	}\n")
+build_file.write("	buildTypes {\n")
+build_file.write("		release {\n")
+build_file.write("			minifyEnabled false\n")
+build_file.write("			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'\n")
+build_file.write("		}\n")
+build_file.write("	}\n")
+build_file.write("}\n")
+build_file.write("dependencies {\n")
+build_file.write("	implementation 'com.android.support.constraint:constraint-layout:1.1.2'\n")
+build_file.write("	implementation 'com.android.support:appcompat-v7:25.3.1'\n")
+build_file.write("}\n")
+build_file.close()
